@@ -5,6 +5,7 @@ describe DockingStation do
   before :all do
     @docking_station = DockingStation.new
     @bike1 = Bike.new
+    @docking_station.dock(@bike1)
   end
 
   it 'successfully creates a new DockingStation instance' do
@@ -13,8 +14,8 @@ describe DockingStation do
 
   it { is_expected.to respond_to(:release_bike) }
 
-  it 'releases working bikes' do
-    bike = subject.release_bike
+  it 'releases a "working" bikes' do
+    bike = @docking_station.release_bike
     expect(bike).to be_working
   end
 
@@ -25,8 +26,12 @@ describe DockingStation do
   end
 
   it 'shows bikes that have been docked to it' do
-    @docking_station.dock(@bike1)
     expect(@docking_station.docked_bikes).to eq(@bike1)
+  end
+
+  it 'raises an error when there are no bikes at the docking station' do
+    @new_ds = DockingStation.new
+    expect { @new_ds.release_bike }.to raise_error
   end
 
 end
