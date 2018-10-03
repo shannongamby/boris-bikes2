@@ -33,16 +33,16 @@ describe DockingStation do
     expect { subject.release_bike }.to raise_error("There are no bikes")
   end
 
-  it 'allows for up to 20 bikes to be docked' do
+  it 'allows for multiple bikes to be docked' do
     station = subject
     bike = Bike.new
-    described_class::DEFAULT_CAPACITY - 1.times { station.dock(bike) }
+    3.times { station.dock(bike) }
     expect(station.dock(bike)).to eq "#{bike} successfully docked"
   end
 
-  it 'raises an error if more than 20 bikes are docked' do
+  it 'raises an error if a bike is docked after the station is full' do
     station = subject
-    described_class::DEFAULT_CAPACITY.times { station.dock(Bike.new) }
+    station.capacity.times { station.dock(Bike.new) }
     expect { station.dock(Bike.new) }.to raise_error("Dock full")
   end
 
