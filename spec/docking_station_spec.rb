@@ -2,12 +2,6 @@ require 'docking_station.rb'
 
 describe DockingStation do
 
-  before :all do
-    @docking_station = DockingStation.new
-    @bike1 = Bike.new
-    @docking_station.dock(@bike1)
-  end
-
   it 'successfully creates a new DockingStation instance' do
     expect(subject).to be_an_instance_of(DockingStation)
   end
@@ -15,26 +9,41 @@ describe DockingStation do
   it { is_expected.to respond_to(:release_bike) }
 
   it 'releases a "working" bikes' do
-    bike = @docking_station.release_bike
+    station = subject
+    station.dock(Bike.new)
+    bike = station.release_bike
     expect(bike).to be_working
   end
 
   it { is_expected.to respond_to(:dock) }
 
   it 'docks a bike' do
-    expect(subject.dock(Bike.new)).to be_an_instance_of(Bike)
+    bike = Bike.new
+    expect(subject.dock(bike)).to eq "#{bike} successfully docked"
   end
 
   it 'shows bikes that have been docked to it' do
-    expect(@docking_station.docked_bikes).to eq(@bike1)
+    bike = Bike.new
+    station = subject
+    station.dock(bike)
+    expect(station.docked_bikes).to eq [bike]
   end
 
   it 'raises an error when there are no bikes at the docking station' do
-    @new_ds = DockingStation.new
-    expect { @new_ds.release_bike }.to raise_error("There are no bikes")
+    expect { subject.release_bike }.to raise_error("There are no bikes")
   end
 
-  it 'raises an error when more than one bike is docked' do
-    expect { @docking_station.dock(Bike.new) }.to raise_error("Bike already docked")
+  it 'allows for up to 20 bikes to be docked' do
+    station = subject
+    bike = Bike.new
+    19.times { station.dock(bike) }
+    expect(station.dock(bike)).to eq "#{bike} successfully docked"
   end
+
+  it 'raises an error if more than 20 bikes are docked' do
+    station = subject
+    20.times { station.dock(Bike.new) }
+    expect { station.dock(Bike.new) }.to raise_error("Dock full")
+  end
+
 end
