@@ -31,7 +31,7 @@ describe DockingStation do
 
   it 'raises an error when there are no bikes at the docking station' do
     @new_ds = DockingStation.new
-    expect { @new_ds.release_bike }.to raise_error
+    expect { @new_ds.release_bike }.to raise_error("There are no bikes")
   end
 
 end
