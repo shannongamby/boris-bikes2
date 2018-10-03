@@ -1,4 +1,6 @@
 require_relative 'docking_station.rb'
+require_relative 'garage'
+require_relative 'van'
 
 class Bike
 
