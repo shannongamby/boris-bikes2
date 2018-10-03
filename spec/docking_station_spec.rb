@@ -34,4 +34,7 @@ describe DockingStation do
     expect { @new_ds.release_bike }.to raise_error("There are no bikes")
   end
 
+  it 'raises an error when more than one bike is docked' do
+    expect { @docking_station.dock(Bike.new) }.to raise_error("Bike already docked")
+  end
 end
