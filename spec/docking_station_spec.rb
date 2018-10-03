@@ -46,4 +46,13 @@ describe DockingStation do
     expect { station.dock(Bike.new) }.to raise_error("Dock full")
   end
 
+  it 'allows the user to specify a default capacity' do
+    station = DockingStation.new(30)
+    expect(station).to eq station
+  end
+
+  it 'has a capacity of 20 when no capacity is specified' do
+    expect(subject.capacity).to eq 20
+  end
+
 end
