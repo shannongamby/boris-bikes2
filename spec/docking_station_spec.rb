@@ -1,4 +1,4 @@
-require 'docking_station.rb'
+require 'docking_station'
 require 'pry'
 
 describe DockingStation do
