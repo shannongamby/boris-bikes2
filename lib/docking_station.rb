@@ -3,7 +3,8 @@ require_relative 'van'
 require_relative 'garage'
 
 class DockingStation
-  attr_reader :docked_bikes, :capacity
+  attr_reader :capacity
+  attr_accessor :docked_bikes
 
   DEFAULT_CAPACITY = 20
 
@@ -22,6 +23,11 @@ class DockingStation
     raise "Dock full" if full?
     @docked_bikes << bike
     "#{bike} successfully docked"
+  end
+
+  def release_broken_bikes(van)
+    van.take_broken_bikes
+    @docked_bikes.reject! { |bike| bike.working? == false }
   end
 
   private

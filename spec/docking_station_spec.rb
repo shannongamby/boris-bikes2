@@ -3,6 +3,7 @@ require 'pry'
 
 describe DockingStation do
   let(:bike) { double :bike }
+  let(:van) { double :van }
 
   it 'successfully creates a new DockingStation instance' do
     expect(subject).to be_an_instance_of(DockingStation)
@@ -65,6 +66,20 @@ describe DockingStation do
     allow(bike).to receive(:report_as_broken).and_return("Thank you for reporting a broken bike.")
     bike.report_as_broken
     expect(subject.dock(bike)).to eq "#{bike} successfully docked"
+  end
+
+  it { is_expected.to respond_to(:release_broken_bikes) }
+
+  it 'should release its broken bikes' do
+    allow(van).to receive(:take_broken_bikes)
+    station = subject
+    working_bike = Bike.new
+    broken_bike = Bike.new
+    broken_bike.report_as_broken
+    station.dock(working_bike)
+    station.dock(broken_bike)
+    station.release_broken_bikes(van)
+    expect(station.docked_bikes).to eq [working_bike]
   end
 
 end
