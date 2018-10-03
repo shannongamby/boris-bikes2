@@ -11,7 +11,7 @@ describe DockingStation do
 
   it 'releases a "working" bikes' do
     station = subject
-    station.dock(Bike.new)
+    station.dock(double(:bike))
     bike = station.release_bike
     expect(bike).to be_working
   end
@@ -19,12 +19,12 @@ describe DockingStation do
   it { is_expected.to respond_to(:dock) }
 
   it 'docks a bike' do
-    bike = Bike.new
+    bike = double(:bike)
     expect(subject.dock(bike)).to eq "#{bike} successfully docked"
   end
 
   it 'shows bikes that have been docked to it' do
-    bike = Bike.new
+    bike = double(:bike)
     station = subject
     station.dock(bike)
     expect(station.docked_bikes).to eq [bike]
@@ -36,15 +36,15 @@ describe DockingStation do
 
   it 'allows for multiple bikes to be docked' do
     station = subject
-    bike = Bike.new
+    bike = double(:bike)
     3.times { station.dock(bike) }
     expect(station.dock(bike)).to eq "#{bike} successfully docked"
   end
 
   it 'raises an error if a bike is docked after the station is full' do
     station = subject
-    station.capacity.times { station.dock(Bike.new) }
-    expect { station.dock(Bike.new) }.to raise_error("Dock full")
+    station.capacity.times { station.dock(double(:bike)) }
+    expect { station.dock(double(:bike)) }.to raise_error("Dock full")
   end
 
   it 'allows the user to specify a default capacity' do
@@ -57,7 +57,7 @@ describe DockingStation do
   end
 
   it 'does not release a broken bike' do
-    bike = Bike.new
+    bike = double(:bike)
     bike.report_as_broken
     station = subject
     station.dock(bike)
@@ -65,7 +65,7 @@ describe DockingStation do
   end
 
   it 'allows a broken bike to be docked' do
-    bike = Bike.new
+    bike = double(:bike)
     bike.report_as_broken
     expect(subject.dock(bike)).to eq "#{bike} successfully docked"
   end
