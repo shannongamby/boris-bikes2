@@ -1,4 +1,5 @@
 require 'docking_station.rb'
+require 'pry'
 
 describe DockingStation do
 
@@ -53,6 +54,20 @@ describe DockingStation do
 
   it 'has a capacity of 20 when no capacity is specified' do
     expect(subject.capacity).to eq 20
+  end
+
+  it 'does not release a broken bike' do
+    bike = Bike.new
+    bike.report_as_broken
+    station = subject
+    station.dock(bike)
+    expect { station.release_bike }.to raise_error("This bike is not working!")
+  end
+
+  it 'allows a broken bike to be docked' do
+    bike = Bike.new
+    bike.report_as_broken
+    expect(subject.dock(bike)).to eq "#{bike} successfully docked"
   end
 
 end
